@@ -8,6 +8,31 @@ The most comprehensive Foundry testing toolkit featuring:
 - Full VM cheatcode documentation
 - Ready-to-use code snippets
 
+---
+
+## 📂 Directory Structure
+
+Below is the directory structure of the project:
+
+```
+contract/
+├── Foundry Test Cheatcode/
+│   ├── foundryTestCheat.sol       // Solidity file containing cheatcode examples
+│   └── foundryTestCheat.json      // JSON file for VS Code snippet integration
+│
+└── Vulnerability Idea/
+    ├── securityIdea.sol           // Solidity file containing test idea examples
+    └── securityIdea.json          // JSON file for VS Code snippet integration
+```
+
+### Explanation of Files:
+- **foundryTestCheat.sol**: Contains practical examples of Foundry cheatcodes for smart contract testing.
+- **foundryTestCheat.json**: JSON file used to integrate Foundry cheatcodes into VS Code for autocomplete support.
+- **securityIdea.sol**: Contains example function signatures for testing vulnerabilities based on real-world audits.
+- **securityIdea.json**: JSON file used to integrate vulnerability test ideas into VS Code for autocomplete support.
+
+---
+
 ## 🔧 Features
 
 ✅ **Smart Contract Test Ideas Collection**  
@@ -60,14 +85,14 @@ This will leverage the `cheatCode.json` template for quick insertion of Foundry 
    cd Ultimate-Foundry-CheatCode
    ```
 
-2. Ensure you have both `cheatCode.json` and `securityIdeas.json` files available in the repository. These files are essential for activating cheatcodes (`ft`) and generating test ideas (`idea`).
+2. Ensure you have both `foundryTestCheat.json` and `securityIdeas.json` files available in the repository. These files are essential for activating cheatcodes (`ft`) and generating test ideas (`idea`).
 
 ---
 
 ## 💡 VS Code Snippet Setup
 
 [Step One]  
-Open the `cheatCode.json` file in VS Code.
+Open the `foundryTestCheat.json` file in VS Code.
 
 [Step Two]  
 Copy the entire content from the file.
@@ -83,7 +108,7 @@ Select `solidity.json` and paste the copied content into the file:
 
 ```json
 {
-  // Paste the entire cheatCode.json content here
+  // Paste the entire foundryTestCheat.json content here
 }
 ```
 
@@ -102,7 +127,7 @@ Your `solidity.json` should now look like this:
 
 ```json
 {
-  // Content from cheatCode.json
+  // Content from foundryTestCheat.json
   // Content from securityIdeas.json
 }
 ```
@@ -256,17 +281,4 @@ interface Vm {
 
 ## ❤️ Acknowledgments
 
-This project would not have been possible without the hard work of the following contributors and platforms:
-- **Cantina**, **Spearbit**, **Code4rena**, **Sherlock**, **Halborn**, **CyfrinAudit**
-- **MixBytes**, **Lonelyslot**, **milotruck**, **oxdeadbeef**, and many others who made their audit findings public.
-- Special thanks to **Solodit** for aggregating these findings and making them easily accessible.
-
-The test ideas in this repository were extracted and refined from over **30 audits**, including those of **YieldFi**, **Euler**, **Surge**, **Optimism**, **FyD May**, **Beanstalk**, **Notional Leverage Vault**, **Sigma Prime**, **Rocketpool**, **Archimedes**, **Tadle**, **PoolTogether**, **Lyra Finance**, **Biconomy**, **Axelar Network**, **WooFiSwap**, **BaderDAO**, **Astaria**, **Ethene Labs**, **Velodrome Finance**, and more.
-
-Thank you all for your contributions to the blockchain security community!
-
----
-
-## 📄 License
-
-MIT – Feel free to use in your projects with proper attribution.
+This
