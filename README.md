@@ -1,4 +1,4 @@
-# Foundry Cheatcode and Smart Contract Test Ideas Boilerplate 🚀
+# Foundry Cheatcode and Smart Contract Audit Ideas Boilerplate 🚀
 
 The most comprehensive Foundry testing toolkit featuring:
 - Standard test patterns
