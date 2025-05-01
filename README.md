@@ -104,7 +104,7 @@ Press `CTRL + SHIFT + P` on your keyboard.
 Search for "snippet" and choose "Configure User Snippets."
 
 [Step Five]  
-Select `solidity.json` and paste the copied content into the file:
+Select `solidity` and paste the copied content into the file:
 
 ```json
 {
@@ -115,25 +115,8 @@ Select `solidity.json` and paste the copied content into the file:
 [Step Six]  
 Save the file (`CTRL+S`). Now you can use cheatcodes via autocomplete.
 
----
-
 [Step Seven]  
-Repeat the process for `securityIdeas.json`:
-- Open the `securityIdeas.json` file in VS Code.
-- Copy its content.
-- Paste it into the same `solidity.json` file below the previous content.
-
-Your `solidity.json` should now look like this:
-
-```json
-{
-  // Content from foundryTestCheat.json
-  // Content from securityIdeas.json
-}
-```
-
-[Step Eight]  
-Save the file again (`CTRL+S`). Now you can use both cheatcodes and test ideas via autocomplete!
+Repeat the process for `securityIdeas.json`.
 
 ---
 
@@ -281,4 +264,17 @@ interface Vm {
 
 ## ❤️ Acknowledgments
 
-This
+This project would not have been possible without the hard work of the following contributors and platforms:
+- **Cantina**, **Spearbit**, **Code4rena**, **Sherlock**, **Halborn**, **CyfrinAudit**
+- **MixBytes**, **Lonelyslot**, **milotruck**, **oxdeadbeef**, and many others who made their audit findings public.
+- Special thanks to **Solodit** for aggregating these findings and making them easily accessible.
+
+The test ideas in this repository were extracted and refined from over **30 audits**, including those of **YieldFi**, **Euler**, **Surge**, **Optimism**, **FyD May**, **Beanstalk**, **Notional Leverage Vault**, **Sigma Prime**, **Rocketpool**, **Archimedes**, **Tadle**, **PoolTogether**, **Lyra Finance**, **Biconomy**, **Axelar Network**, **WooFiSwap**, **BaderDAO**, **Astaria**, **Ethene Labs**, **Velodrome Finance**, and more.
+
+Thank you all for your contributions to the blockchain security community!
+
+---
+
+## 📄 License
+
+MIT – Feel free to use in your projects with proper attribution.
