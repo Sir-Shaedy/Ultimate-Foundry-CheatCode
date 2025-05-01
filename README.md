@@ -1,24 +1,73 @@
-# Ultimate Foundry CheatCode Boilerplate 🚀
+# Foundry Cheatcode and Smart Contract Test Ideas Boilerplate 🚀
 
 The most comprehensive Foundry testing toolkit featuring:
 - Standard test patterns
-- Advanced invariant testing
-- Cheatcode reference
-- Handler-based testing
-- Full VM interface documentation
+- Advanced invariant & fuzzing tests
+- Handler-based differential testing
+- A massive collection of test ideas grouped into categories like Staking, Bridge, and Yield
+- Full VM cheatcode documentation
 - Ready-to-use code snippets
+
+## 🔧 Features
+
+✅ **Smart Contract Test Ideas Collection**  
+A curated list of 600+ test ideas that you can use as inspiration during smart contract audits or development. These ideas are grouped into categories such as Staking, Bridge, and Yield. Each idea is represented as a function signature, ready for implementation:
+
+```solidity
+function test_third_party_redeem_burns_shares_from_owner_even_when_allowance_used() public;
+function test_third_party_redeem_only_spends_approved_allowance_and_not_more() public;
+function test_requestWithdrawal_allows_anyone_to_initiate_with_valid_parameters() public; 
+function test_rescueTokens_function_cannot_be_called_by_authorized_addresses() public; 
+function test_position_cannot_be_unwound_after_transfer_to_new_owner() public; 
+```
+
+These test ideas were extracted and refined from over **30 public and private security reviews** conducted on protocols such as:
+- **YieldFi**, **Euler**, **Surge**, **Optimism**, **FyD May**, **Beanstalk**
+- **Notional Leverage Vault**, **Sigma Prime**, **Rocketpool**, **Archimedes**
+- **Tadle**, **PoolTogether**, **Lyra Finance**, **Biconomy**, **Axelar Network**
+- **WooFiSwap**, **BaderDAO**, **Astaria**, **Ethene Labs**, **Velodrome Finance**
+
+Big thanks to platforms like **Solodit** for aggregating findings from these audits, making it easier to compile this extensive list of test ideas. Special thanks to:
+- **Cantina**, **Spearbit**, **Code4rena**, **Sherlock**, **Halborn**, **CyfrinAudit**
+- **MixBytes**, **Lonelyslot**, **milotruck**, **oxdeadbeef**, and others who made their findings public.
+
+You can generate this list of test ideas by simply typing:
+
+```bash
+idea
+```
+
+To scaffold a new test file based on the `securityIdeas.json` template.
+
+---
+
+✅ **Foundry Cheatcode Snippets**  
+Access a wide range of cheatcodes to streamline your smart contract testing. Activate cheatcodes by typing:
+
+```bash
+ft
+```
+
+This will leverage the `cheatCode.json` template for quick insertion of Foundry cheatcodes.
+
+---
 
 ## 📦 Installation
 
-```bash
-git clone https://github.com/Sir-Shaedy/Ultimate-Foundry-CheatCode.git
-cd Ultimate-Foundry-CheatCode
-```
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Sir-Shaedy/Ultimate-Foundry-CheatCode.git
+   cd Ultimate-Foundry-CheatCode
+   ```
 
-## 🔌 VS Code Snippet Setup
+2. Ensure you have both `cheatCode.json` and `securityIdeas.json` files available in the repository. These files are essential for activating cheatcodes (`ft`) and generating test ideas (`idea`).
+
+---
+
+## 💡 VS Code Snippet Setup
 
 [Step One]  
-Open the `ultimateCheat.json` file in VS Code.
+Open the `cheatCode.json` file in VS Code.
 
 [Step Two]  
 Copy the entire content from the file.
@@ -34,12 +83,34 @@ Select `solidity.json` and paste the copied content into the file:
 
 ```json
 {
-  // Paste the entire ultimateCheat.json content here
+  // Paste the entire cheatCode.json content here
 }
 ```
 
 [Step Six]  
-Save the file (`CTRL+S`). Now you can use all cheatcodes via autocomplete!
+Save the file (`CTRL+S`). Now you can use cheatcodes via autocomplete.
+
+---
+
+[Step Seven]  
+Repeat the process for `securityIdeas.json`:
+- Open the `securityIdeas.json` file in VS Code.
+- Copy its content.
+- Paste it into the same `solidity.json` file below the previous content.
+
+Your `solidity.json` should now look like this:
+
+```json
+{
+  // Content from cheatCode.json
+  // Content from securityIdeas.json
+}
+```
+
+[Step Eight]  
+Save the file again (`CTRL+S`). Now you can use both cheatcodes and test ideas via autocomplete!
+
+---
 
 ## 🧪 Test Types Overview
 
@@ -49,10 +120,10 @@ function testTransfer() public {
     // Setup
     deal(alice, 1 ether);
     vm.prank(alice);
-    
+
     // Execute
     token.transfer(bob, 1 ether);
-    
+
     // Verify
     assertEq(token.balanceOf(bob), 1 ether);
 }
@@ -60,7 +131,7 @@ function testTransfer() public {
 
 ### 2. Invariant Tests
 ```solidity
-contract InvariantTest {
+contract InvariantTest is Test {
     function invariant_balance_sum() public view {
         assertEq(
             token.balanceOf(alice) + token.balanceOf(bob),
@@ -70,30 +141,34 @@ contract InvariantTest {
 }
 ```
 
-### 3. Handler-Based Testing
+### 3. Handler-Based Differential Testing
 ```solidity
-contract Handler {
+contract TokenHandler is Test {
+    uint256 internal ghost_totalSupply;
+
     function deposit(uint256 amount) public {
         amount = bound(amount, 1, 100 ether);
-        token.deposit(amount);
-        ghost_deposits += amount;
+        token.deposit{value: amount}(user);
+        ghost_totalSupply += amount;
     }
 }
 ```
+
+---
 
 ## 🎮 Cheatcode Categories
 
 ### Time Manipulation ⏰
 ```solidity
-vm.warp(block.timestamp + 1 days);  // Fast forward
-vm.roll(block.number + 100);        // Jump blocks
+vm.warp(block.timestamp + 1 days);  // Fast forward time
+vm.roll(block.number + 100);         // Jump block number
 ```
 
 ### Account Simulation 👤
 ```solidity
-vm.prank(alice);                    // Next call's msg.sender
-vm.startPrank(alice);               // Persistent prank
-deal(alice, 100 ether);             // Fund account
+vm.prank(alice);                     // Next call as alice
+vm.startPrank(alice);                // All subsequent calls as alice
+deal(alice, 100 ether);              // Fund user account
 ```
 
 ### Forking 🌐
@@ -102,9 +177,11 @@ uint256 forkId = vm.createFork("mainnet");
 vm.selectFork(forkId);
 ```
 
+---
+
 ## 🛠️ Advanced Patterns
 
-### Mocking Calls
+### Mocking External Calls
 ```solidity
 vm.mockCall(
     address(token),
@@ -113,26 +190,42 @@ vm.mockCall(
 );
 ```
 
-### Gas Snapshots
+### Gas Snapshots & Measurement
 ```solidity
 uint256 gasBefore = gasleft();
 token.swap();
 console.log("Gas used:", gasBefore - gasleft());
 ```
 
-### Fuzz Testing
+### Fuzz Testing with Bounds
 ```solidity
-function testFuzzTransfer(uint256 amount) public {
+function testFuzz_Transfer(uint256 amount) public {
     amount = bound(amount, 1, 1000 ether);
     deal(alice, amount);
+    
     vm.prank(alice);
     token.transfer(bob, amount);
 }
 ```
 
+### Log Tracing for Debugging
+```solidity
+vm.recordLogs();
+myContract.action();
+Vm.Log[] memory logs = vm.getRecordedLogs();
+```
+
+### Revert Reason Matching
+```solidity
+vm.expectRevert(abi.encodeWithSelector(CustomError.selector));
+```
+
+---
+
 ## 📚 Full VM Interface Reference
 
 ### View Operations (VmSafe)
+
 ```solidity
 interface VmSafe {
     function readFile(string calldata) external view returns (string memory);
@@ -141,6 +234,7 @@ interface VmSafe {
 ```
 
 ### State-Changing Operations (Vm)
+
 ```solidity
 interface Vm {
     function etch(address, bytes calldata) external;
@@ -149,64 +243,30 @@ interface Vm {
 }
 ```
 
-## 🏗️ Project Structure
-```
-├── test/
-│   ├── Standard/
-│   │   └── Basic.t.sol          # Conventional tests
-│   ├── Invariant/
-│   │   └── Protocol.t.sol       # Property-based tests
-│   └── Mocks/
-│       └── ERC20Mock.t.sol      # Mock contracts
-├── script/
-│   └── Deploy.s.sol             # Deployment scripts
-└── cheatcodes/                  
-    └── ultimateCheat.json       # VS Code snippets
-```
-
-## 🚀 Quick Start
-1. Install Foundry:
-```bash
-curl -L https://foundry.paradigm.xyz | bash
-foundryup
-```
-
-2. Run tests:
-```bash
-forge test -vvv                  # Basic tests
-forge test --match-contract InvariantTest -vvvv  # Invariant tests
-```
+---
 
 ## 📜 Best Practices
-- 🔄 Always clean up with `vm.stopPrank()`/`vm.clearMockedCalls()`
-- 🏷️ Use `vm.label(address, "Name")` for better traces
-- 📊 Generate gas reports with `forge test --gas-report`
-- 🧹 Separate test types into different files/directories
 
-## 🆘 Troubleshooting
-| Error | Solution |
-|-------|----------|
-| "No such file" | Run `forge install` |
-| Cheatcode not working | Check `foundry.toml` FFI settings |
-| Snapshots failing | Ensure `vm.revertTo(snapshotId)` is called |
+- 🔄 Always clean up with `vm.stopPrank()` or `vm.clearMockedCalls()`
+- 🏷️ Use `vm.label(address, "Name")` for better traceability
+- 📊 Generate detailed gas reports using `forge test --gas-report`
+- 🧹 Keep test files modular – separate unit, invariant, handler tests
 
-## 📈 Benchmark Results
-```text
-Standard Tests:   256 runs  | 0.8s avg
-Invariant Tests:  10k runs  | 4.2s avg
-Fuzz Tests:       500 runs  | 1.5s avg
-```
+---
 
-## 🌟 Pro Tips
-```solidity
-// Debug complex tests with traces
-vm.recordLogs();
-myContract.action();
-Vm.Log[] memory logs = vm.getRecordedLogs();
+## ❤️ Acknowledgments
 
-// Test specific revert reasons
-vm.expectRevert(abi.encodeWithSelector(CustomError.selector));
-```
+This project would not have been possible without the hard work of the following contributors and platforms:
+- **Cantina**, **Spearbit**, **Code4rena**, **Sherlock**, **Halborn**, **CyfrinAudit**
+- **MixBytes**, **Lonelyslot**, **milotruck**, **oxdeadbeef**, and many others who made their audit findings public.
+- Special thanks to **Solodit** for aggregating these findings and making them easily accessible.
+
+The test ideas in this repository were extracted and refined from over **30 audits**, including those of **YieldFi**, **Euler**, **Surge**, **Optimism**, **FyD May**, **Beanstalk**, **Notional Leverage Vault**, **Sigma Prime**, **Rocketpool**, **Archimedes**, **Tadle**, **PoolTogether**, **Lyra Finance**, **Biconomy**, **Axelar Network**, **WooFiSwap**, **BaderDAO**, **Astaria**, **Ethene Labs**, **Velodrome Finance**, and more.
+
+Thank you all for your contributions to the blockchain security community!
+
+---
 
 ## 📄 License
-MIT - Use freely in your projects with attribution
+
+MIT – Feel free to use in your projects with proper attribution.
